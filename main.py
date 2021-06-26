@@ -71,7 +71,14 @@ options= [{
         }
     ]
 }]
+async def addinsult(newInsult):
+    insultsCol.insert_one(newInsult)
 
+async def addQuote(newQuote):
+    quotesCol.insert_one(newQuote)
+
+async def addPraise(newPraise):
+    praisesCol.insert_one(newPraise)
 
 @client.event
 async def on_ready():
@@ -113,20 +120,18 @@ async def j(ctx : SlashCommand , options = options):
 async def sopranos(ctx : SlashCommand):
     await ctx.send(squote[0])
 
-async def addinsult(newInsult):
-    insultsCol.insert_one(newInsult)
-
-async def addQuote(newQuote):
-    quotesCol.insert_one(newQuote)
-
-async def addPraise(newPraise):
-    praisesCol.insert_one(newPraise)
-
 @client.event
 async def on_message(message):
     if message.author.id == client.user.id:
         return
-    
+    if secretWord in message.content:
+        embed = discord.Embed(
+        title="SECRET WORD!!!!!",
+        color=discord.Colour.red(),
+        description = "You used the SECRET WORD :confetti_ball: :tada:   " + secretWord.upper() + "!!!!!!"
+        )
+        embed.set_image(url="https://media.giphy.com/media/NvXLlQvvXSmQM/giphy.gif")
+        await message.channel.send(embed=embed)
     if message.content.startswith('!add-insult'):
         if message.author.id == int(jid):
             await message.channel.send(" <@{}>".format(jid) + ", you are not authorized to add insults.")
@@ -137,7 +142,6 @@ async def on_message(message):
 
             await addinsult(insert)
             await message.channel.send('The insult "{}" has been added.'.format(insult))
-
     elif message.content.startswith('!add-quote'):
         if message.author.id != int(jid):
             await message.channel.send("<@{}>".format(message.author.id) + ", you are not authorized to add quotes.")
@@ -155,16 +159,5 @@ async def on_message(message):
 
             await addPraise(insert)
             await message.channel.send('The praise "{}" has been added.'.format(praise))   
-
-@client.event
-async def on_message(message):
-    if secretWord in message.content:
-        embed = discord.Embed(
-        title="SECRET WORD!!!!!",
-        color=discord.Colour.red(),
-        description = "You used the SECRET WORD :confetti_ball: :tada:   " + secretWord.upper() + "!!!!!!"
-        )
-        embed.set_image(url="https://media.giphy.com/media/NvXLlQvvXSmQM/giphy.gif")
-        await message.channel.send(embed=embed)
 
 client.run(discordToken)
