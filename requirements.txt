@@ -1,8 +1,6 @@
-requests
-os
-discord
-random
-pymongo
-python-dotenv
-discord.py
-discord-py-slash-command
+requests==2.25.1
+os==2.1.4
+pymongo==3.11.4
+python-dotenv==0.17.1
+discord.py==1.7.3
+discord-py-slash-command==1.1.2
