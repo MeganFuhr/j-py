@@ -84,7 +84,7 @@ class Help:
     imagethumbnail="https://github.com/MeganFuhr/BingaGifs/blob/main/j5.png?raw=true"
     authorName="Megan Fuhr"
     authorIcon_URL="https://avatars.githubusercontent.com/u/8890846?v=4"
-    authorUrl="https://github.com/MeganFuhr/BingaBonga-JS"
+    authorUrl="https://github.com/MeganFuhr/j-py"
 
 async def addinsult(newInsult):
     insultsCol.insert_one(newInsult)
