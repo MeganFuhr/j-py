@@ -13,7 +13,7 @@ load_dotenv()
 giphy = os.getenv('GIPHY_API')
 discordToken = os.getenv('DISCORD_TOKEN')
 jid = os.getenv('DISCORD_ID')
-gid = (os.getenv('GUILDS_ID'))
+gid = [int(os.getenv('GUILDS_ID'))]
 secretWord = os.getenv('SECRET_WORD')
 
 mongo = pymongo.MongoClient(os.getenv('MONGOURI'))
