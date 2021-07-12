@@ -40,7 +40,12 @@ stparams = {
 client = commands.Bot(command_prefix='!')
 slash = SlashCommand(client , sync_commands=True)
 
-options= [{
+genericOptions = [{
+    "name": "ZilloBot",
+    "description": "Tell ZilloBot what to do."
+}]
+
+joptions= [{
     "name": "ZilloBot",
     "description": "Tell ZilloBot what to do.",
     "options": [
@@ -71,6 +76,16 @@ options= [{
         }
     ]
 }]
+
+class Help:
+    title="ZilloBot Help"
+    color=discord.Colour.blue()
+    description="Available commands below."
+    imagethumbnail="https://github.com/MeganFuhr/BingaGifs/blob/main/j5.png?raw=true"
+    authorName="Megan Fuhr"
+    authorIcon_URL="https://avatars.githubusercontent.com/u/8890846?v=4"
+    authorUrl="https://github.com/MeganFuhr/BingaBonga-JS"
+
 async def addinsult(newInsult):
     insultsCol.insert_one(newInsult)
 
@@ -84,19 +99,8 @@ async def addPraise(newPraise):
 async def on_ready():
     print("Bot is logged in as {0.user}".format(client))
 
-@slash.slash(name = 'st', guild_ids=gid, description="Return a random Swear Trek gif.")
-async def st(ctx : SlashCommand ):
-    r = requests.get(url, stparams)
-    rJson = json.loads(r.text)
-    embedUrl = (rJson['data']['images']['downsized']['url'])
-    embed = discord.Embed(
-        title="Swear Trek!",
-        color=discord.Colour.purple())
-    embed.set_image(url=embedUrl)
-    await ctx.send(embed=embed)
-
 @slash.slash(name = 'j', guild_ids=gid, description="OPTIONS: Insult, Quote, Praise, Gif")
-async def j(ctx : SlashCommand , options = options):
+async def j(ctx : SlashCommand , options = joptions):
     if (options.lower() == "insult"):
         doc = insultsCol.find()[random.randrange(insultsCount)]
         await ctx.send(" <@{}>, ".format(jid) + doc["insult"] + " :middle_finger:")
@@ -116,8 +120,40 @@ async def j(ctx : SlashCommand , options = options):
     else:
         return
 
+@slash.slash(name = 'help', guild_ids=gid, description="Show all available commands.")
+async def st(ctx : SlashCommand, options = genericOptions):
+    embed = discord.Embed(
+        title=Help.title,
+        color=discord.Colour.blue(),
+        description=Help.description
+        )
+    embed.set_thumbnail(url=Help.imagethumbnail)
+    embed.set_author(name=Help.authorName, url=Help.authorUrl, icon_url=Help.authorIcon_URL)
+    embed.add_field(name='!add-insult', value='Add an insult to the database. Anyone except J can add insults.')
+    embed.add_field(name='!add-praise', value='Add a praise to the database.  Anyone can add a praise.')
+    embed.add_field(name='!add-quote', value='Add a quote to the database.  Only J can add quotes.')
+    embed.add_field(name='/j', value='Option: gif => Display a random gif of J.')
+    embed.add_field(name='/j', value='Option: insult => Return a random insult to J.')
+    embed.add_field(name='/j', value='Option: praise => Return a random praise to J.')
+    embed.add_field(name='/j', value='Option: quote => Return a random quote of J.')
+    embed.add_field(name='/sopranos', value='Display a quote from a favorite J show.')
+    embed.add_field(name='/st', value='Display a random Swear Trek gif.')
+    embed.set_footer(text="ZilloBot",icon_url=Help.imagethumbnail)
+    await ctx.send(embed=embed)
+
+@slash.slash(name = 'st', guild_ids=gid, description="Return a random Swear Trek gif.")
+async def st(ctx : SlashCommand, options = genericOptions):
+    r = requests.get(url, stparams)
+    rJson = json.loads(r.text)
+    embedUrl = (rJson['data']['images']['downsized']['url'])
+    embed = discord.Embed(
+        title="Swear Trek!",
+        color=discord.Colour.purple())
+    embed.set_image(url=embedUrl)
+    await ctx.send(embed=embed)
+
 @slash.slash(name = 'sopranos', guild_ids=gid, description="Heeeyyyy I'm walkin' here.")
-async def sopranos(ctx : SlashCommand):
+async def sopranos(ctx : SlashCommand, options = genericOptions):
     await ctx.send(squote[0])
 
 @client.event
