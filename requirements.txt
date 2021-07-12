@@ -1,8 +1,8 @@
 requests
-jsonlib
 os
 discord
 random
 pymongo
 python-dotenv
 discord.py
+discord-py-slash-command
