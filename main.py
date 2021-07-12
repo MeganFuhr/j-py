@@ -10,13 +10,13 @@ from discord_slash import SlashCommand , SlashCommandOptionType , SlashContext
 from discord_slash.utils.manage_commands import create_option
 
 load_dotenv()
-giphy = os.environ.get('GIPHY_API')
-discordToken = os.environ.get('DISCORD_TOKEN')
-jid = os.environ.get('DISCORD_ID')
-gid = [int(os.environ.get('GUILDS_ID'))]
-secretWord = os.environ.get('SECRET_WORD')
+giphy = os.getenv('GIPHY_API')
+discordToken = os.getenv('DISCORD_TOKEN')
+jid = os.getenv('DISCORD_ID')
+gid = [int(os.getenv('GUILDS_ID'))]
+secretWord = os.getenv('SECRET_WORD')
 
-mongo = pymongo.MongoClient(os.environ.get('MONGOURI'))
+mongo = pymongo.MongoClient(os.getenv('MONGOURI'))
 
 insultsCol = mongo["BingaBonga"]["insults"]
 quotesCol = mongo["BingaBonga"]["quotes"]
