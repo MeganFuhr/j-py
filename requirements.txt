@@ -1,5 +1,5 @@
 requests
-json
+jsonlib
 os
 discord
 random
