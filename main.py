@@ -9,6 +9,10 @@ from discord.ext import commands
 from discord_slash import SlashCommand , SlashCommandOptionType , SlashContext
 from discord_slash.utils.manage_commands import create_option
 
+import certifi
+ca = certifi.where()
+
+
 load_dotenv()
 giphy = os.getenv('GIPHY_API')
 discordToken = os.getenv('DISCORD_TOKEN')
@@ -16,7 +20,7 @@ jid = os.getenv('DISCORD_ID')
 gid = [int(os.getenv('GUILDS_ID'))]
 secretWord = os.getenv('SECRET_WORD')
 
-mongo = pymongo.MongoClient(os.getenv('MONGOURI'))
+mongo = pymongo.MongoClient(os.getenv('MONGOURI'), tlsCAFile=ca)
 
 insultsCol = mongo["BingaBonga"]["insults"]
 quotesCol = mongo["BingaBonga"]["quotes"]
